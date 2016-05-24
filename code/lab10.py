@@ -28,8 +28,6 @@ class Run:
         self.map = lab10_map.Map("lab10.map")
 
         self.odometry = odometry.Odometry()
-        #self.pidTheta = pid_controller.PIDController(300, 5, 50, [-10, 10], [-200, 200], is_angle=True)
-        #self.pidDistance = pid_controller.PIDController(1000, 0, 50, [0, 0], [-200, 200], is_angle=False)
         self.pf = particle_filter.ParticleFilter()
 
     def sleep(self, time_in_sec, dt = 0):
@@ -49,15 +47,9 @@ class Run:
 
 
     def movement(self, move):
-        # goal_x = 0.5
-        # goal_y = 0
         base_speed = 100
 
         goal_theta = -math.pi / 2.0
-        # start_time = self.time.time()
-
-        
-        # start_distance = 0
 
         # request sensors
         self.create.start_stream([
@@ -66,23 +58,7 @@ class Run:
         ])
         
         if move == "forward":
-            # while True:
-            #     state = self.create.update()
-            #     if state is not None:
-            #         self.odometry.update(state.leftEncoderCounts, state.rightEncoderCounts)
-            #         goal_theta = math.atan2(goal_y - self.odometry.y, goal_x - self.odometry.x)
-            #         theta = math.atan2(math.sin(self.odometry.theta), math.cos(self.odometry.theta))
 
-
-            #         output = self.pidDistance.update(start_distance, goal_distance, self.time.time())
-            #         # use odometry 
-            #         start_distance = self.odometry.x
-            #         print("output is {}".format(output))
-            #         self.create.drive_direct(int(base_speed - output), int(base_speed + output))
-            #         if (math.fabs(output - goal_distance) < 0.2):
-            #             print("returning")
-            #             self.create.stop()
-            #             return
             x = self.odometry.x
             y = self.odometry.y
             while True:
@@ -97,16 +73,6 @@ class Run:
 
 
         if move == "left":
-            # while True:
-            #     state = self.create.update()
-            #     if state is not None:
-            #         self.odometry.update(state.leftEncoderCounts, state.rightEncoderCounts)
-            #         output_theta = self.pidTheta.update(self.odometry.theta, -goal_theta, self.time.time())
-            #         self.create.drive_direct(int(output_theta), int(-output_theta))
-            #         if (math.fabs(output_theta - goal_theta) < 0.5):
-            #             print("returning")
-            #             self.create.stop()
-            #             return
 
             target_theta = self.odometry.theta + (math.pi/2)
             while True:
@@ -120,16 +86,6 @@ class Run:
 
 
         if move == "right":
-            # while True:
-            #     state = self.create.update()
-            #     if state is not None:
-            #         self.odometry.update(state.leftEncoderCounts, state.rightEncoderCounts)
-            #         output_theta = self.pidTheta.update(self.odometry.theta, goal_theta, self.time.time())
-            #         self.create.drive_direct(int(output_theta), int(-output_theta))
-            #         if (math.fabs(output_theta - goal_theta) < 0.5):
-            #             print("returning")
-            #             self.create.stop()
-            #             return
 
             target_theta = self.odometry.theta - (math.pi/2)
             while True:
